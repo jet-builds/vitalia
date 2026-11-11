@@ -38,3 +38,5 @@ document.addEventListener('click',e=>{const a=e.target.dataset&&e.target.dataset
 function exportCsv(){const r=['fecha,sueno,agua,animo,gasto,prioridad,hecha,puntos'].concat(Object.keys(db.days).sort().map(d=>{const x=db.days[d];return [d,x.sleep,x.water,x.mood,x.spent,'"'+String(x.task).replace(/"/g,'""')+'"',x.done,score(x)].join(',')}));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([r.join(String.fromCharCode(10))],{type:'text/csv'}));a.download='vitalia.csv';a.click()}
 render();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+
+document.addEventListener('input',()=>{const x=day(today()),sc=score(x),p=document.querySelectorAll('.score p');p[0].textContent=msg(sc);p[1].textContent='Racha: '+streak()+' dias';const l=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return ds(d)});document.querySelector('.chart').innerHTML=l.map(k=>'<i style="height:'+score(db.days[k]||E)+'%"></i>').join('');const b=document.querySelector('.row b');if(b)b.textContent=sc});
